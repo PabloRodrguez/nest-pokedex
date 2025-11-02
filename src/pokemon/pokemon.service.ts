@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException, Query } from '@nestjs/common';
 import { CreatePokemonDto } from './dto/create-pokemon.dto';
 import { UpdatePokemonDto } from './dto/update-pokemon.dto';
 import { isValidObjectId, Model } from 'mongoose';
 import { Pokemon } from './entities/pokemon.entity';
 import { InjectModel } from '@nestjs/mongoose';
+import { PaginationDto } from 'src/common/dto/Pagination.dto';
 
 @Injectable()
 export class PokemonService {
@@ -27,8 +28,18 @@ export class PokemonService {
     }
   }
 
-  findAll() {
-    return this.pokemonModel.find();
+  findAll(
+    paginationDto: PaginationDto
+  ) {
+    const { limit = 10, offset = 0} = paginationDto
+    return this.pokemonModel.find()
+    .limit( limit )
+    .skip( offset)
+    .sort({
+      no:1
+    })
+    .select('-__v')
+    ;
   }
 
   async findOne(term: string) {
