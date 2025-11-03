@@ -17,7 +17,13 @@
   ```
   docker-compose up-d
   ```
-  5. Reconstruir base de datos
+  5. Clonar el archivo __.env.template__ y renombrarlo __.env__
+  6. Lleanar las variables de entorno en el archivo __.env__
+  7. Ejecutar la aplicacion
+   ``` 
+   npm run start:dev
+   ```
+  8. Reconstruir base de datos
   ``` 
   https://localhost:3000/api/v2/seed
   ```
